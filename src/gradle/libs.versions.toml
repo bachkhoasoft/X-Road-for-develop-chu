@@ -131,7 +131,7 @@ hsqldb = { module = "org.hsqldb:hsqldb", version = "2.7.3" }
 liquibase-core = { module = "org.liquibase:liquibase-core", version = "4.29.1" }
 xerces-impl = { module = "xerces:xercesImpl", version = "2.12.2" }
 feign-hc5 = { module = "io.github.openfeign:feign-hc5", version = "13.3" }
-guava = { module = "com.google.guava:guava", version = "33.0.0-jre" }
+guava = { module = "com.google.guava:guava", version = "23.0" }
 swagger-annotations = { module = "io.swagger.core.v3:swagger-annotations", version = "2.2.22" }
 awaitility = { module = "org.awaitility:awaitility", version = "4.2.2" }
 bucket4j-core = { module = "com.bucket4j:bucket4j-core", version = "8.10.1" }
