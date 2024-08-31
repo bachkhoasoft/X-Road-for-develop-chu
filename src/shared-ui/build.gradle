@@ -1,0 +1,47 @@
+import org.siouan.frontendgradleplugin.infrastructure.gradle.RunPnpm
+
+plugins {
+    alias(libs.plugins.frontendJDK21)
+}
+
+frontend {
+    nodeVersion = frontendNodeVersion
+    nodeInstallDirectory = file("${rootDir}/.gradle/pnpm-node/${frontendNodeVersion}")
+    cacheDirectory = file("${projectDir}/.gradle/pnpm-cache")
+    nodeDistributionUrlRoot = 'https://artifactory.niis.org/artifactory/nodejs-dist-remote/'
+    maxDownloadAttempts = 3
+
+    packageJsonDirectory = file("${rootDir}/")
+    if (System.getenv().containsKey("CI")) {
+        installScript = 'install --frozen-lockfile'
+    }
+}
+
+tasks.register('build-pnpm-workspace', RunPnpm) {
+    dependsOn installFrontend
+    script = 'run build-workspace'
+}
+
+tasks.named("cleanFrontend").configure {
+    enabled(false)
+}
+
+tasks.register('checkFrontAudit', RunPnpm) {
+    dependsOn assembleFrontend
+
+    script = 'run npx-check-audit'
+}
+if (project.hasProperty('frontend-npm-audit')) {
+    assemble.dependsOn checkFrontAudit
+}
+
+//check that pnpm run license-check passes
+tasks.register('checkFrontWorkspaceLicense', RunPnpm) {
+    dependsOn installFrontend
+    script = ' run -r license-check'
+}
+checkFrontend.dependsOn checkFrontWorkspaceLicense
+
+clean {
+    delete file('dist')
+}

@@ -1,0 +1,17 @@
+dependencies {
+    implementation project(':common:common-op-monitoring')
+
+    implementation project(':proxy:application')
+    implementation project(':common:common-domain')
+    implementation project(':common:common-message')
+    implementation project(':common:common-jetty')
+    implementation project(':serverconf')
+
+    testImplementation project(':common:common-test')
+    testImplementation libs.commons.cli
+}
+
+tasks.register('runOpMonitoringBufferMemoryUsage', JavaExec) {
+    mainClass = 'ee.ria.xroad.proxy.opmonitoring.OpMonitoringBufferMemoryUsage'
+    classpath = sourceSets.test.runtimeClasspath
+}
